@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\SiRefEqInfo;
 use Illuminate\Http\Request;
+use App\DataTables\SiRefEqInfoDataTable;
 
 class SiRefEqInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SiRefEqInfoDataTable $siRefEqInfoDataTable)
     {
-        //
-        $siRefEqInfos = SiRefEqInfo::paginate(10);
-        return view('si_ref_eq_infos.index', compact('siRefEqInfos'));
+        // dd($siRefEqInfoDataTable);
+        return $siRefEqInfoDataTable->render('si_ref_eq_infos.index');
     }
 
     /**
