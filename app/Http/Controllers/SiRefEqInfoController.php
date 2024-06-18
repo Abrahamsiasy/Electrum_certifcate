@@ -13,8 +13,50 @@ class SiRefEqInfoController extends Controller
      */
     public function index(SiRefEqInfoDataTable $siRefEqInfoDataTable)
     {
-        // dd($siRefEqInfoDataTable);
-        return $siRefEqInfoDataTable->render('si_ref_eq_infos.index');
+        // return $siRefEqInfoDataTable->render('si_ref_eq_infos.index');
+        $siRefEqInfos = SiRefEqInfo::paginate(10);
+        $uniqueEqNames = SiRefEqInfo::distinct()->pluck('eq_name');
+        return view('si_ref_eq_infos.index', compact('uniqueEqNames', 'siRefEqInfos'));
+    }
+
+    public function getSensorIdsByEqName(Request $request)
+    {
+        $eqName = $request->input('eq_name');
+        $sensorIds = SiRefEqInfo::where('eq_name', $eqName)
+            ->get()
+            ->map(function ($item) {
+                return $item->sensor_id;
+            })->unique()->toArray(); // Ensuring the list is not duplicated
+        // dd($sensorIds);
+
+        return response()->json($sensorIds);
+    }
+
+
+    public function getDivRowIdsByEqName(Request $request)
+    {
+        $eqName = $request->input('eq_name');
+        $eqSensor = $request->input('eq_sensor');
+        $divRows = SiRefEqInfo::where('eq_name', $eqName)
+            ->where('sensor_id', $eqSensor)
+            ->get()->toArray(); // Ensuring the list is not duplicated
+        // dd($divRows);
+        return response()->json($divRows);
+    }
+
+
+    public function siRefEqInfosTable(Request $request)
+    {
+        // dd($request->all());
+        $siRefEqInfos = SiRefEqInfo::where('eq_name', $request->eq_name)
+            ->where('sensor_id', $request->eq_sensor)
+            ->where('res', 'like', $request->eq_res)
+            ->where('cal_date', $request->eq_cal)
+            ->where('split_no', $request->eq_split)
+            ->get();
+        // dd($siRefEqInfos);
+
+        return response()->json($siRefEqInfos);
     }
 
     /**
