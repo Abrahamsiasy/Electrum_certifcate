@@ -4,51 +4,52 @@
     <div class="container">
         <div class="row">
 
-                <div class="col-md-12">
-                    <h1 class="my-2">SI Reference Equipment Info</h1>
+            <div class="col-md-12">
+                <h1 class="my-2">SI Reference Equipment Info</h1>
 
-                    <h2>Select Equipment Name</h2>
-                    <select class="form-control select2" id="eq_name_select" name="eq_name">
-                        @foreach ($uniqueEqNames as $eqName)
-                            <option value="{{ $eqName }}">{{ $eqName }}</option>
-                        @endforeach
+                <h2>Select Equipment Name</h2>
+                <select class="form-control select2" id="eq_name_select" name="eq_name">
+                    @foreach ($uniqueEqNames as $eqName)
+                        <option value="{{ $eqName }}">{{ $eqName }}</option>
+                    @endforeach
+                </select>
+
+                <div class="row my-2" id="sensor_div" style="display: none;">
+                    <h2 class="mt-4">Select Equipment with Sensor ID</h2>
+                    <select class="form-control select2" id="eq_sensor_select" name="eq_sensor">
+                        <option value="">Select Equipment Name first</option>
                     </select>
-
-                    <div class="row my-2" id="sensor_div" style="display: none;">
-                        <h2 class="mt-4">Select Equipment with Sensor ID</h2>
-                        <select class="form-control select2" id="eq_sensor_select" name="eq_sensor">
-                            <option value="">Select Equipment Name first</option>
-                        </select>
-                    </div>
-
-                    <div class="row my-2" id="row_div" style="display: none;">
-                        <div class="col-md-4">
-                            <h3>Select Equipment Res</h3>
-                            <select class="form-control select2" id="eq_res_select" name="eq_res">
-                                <option value="">Select Equipment Res first</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <h3>Select Equipment Cal</h3>
-                            <select class="form-control select2" id="eq_cal_select" name="eq_cal">
-                                <option value="">Select Equipment Cal first</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <h3>Select Equipment Split No</h3>
-                            <select class="form-control select2" id="eq_split_select" name="eq_split">
-                                <option value="">Select Equipment Split first</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
 
+                <div class="row my-2" id="row_div" style="display: none;">
+                    <div class="col-md-4">
+                        <h3>Select Equipment Res</h3>
+                        <select class="form-control select2" id="eq_res_select" name="eq_res">
+                            <option value="">Select Equipment Res first</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>Select Equipment Cal</h3>
+                        <select class="form-control select2" id="eq_cal_select" name="eq_cal">
+                            <option value="">Select Equipment Cal first</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>Select Equipment Split No</h3>
+                        <select class="form-control select2" id="eq_split_select" name="eq_split">
+                            <option value="">Select Equipment Split first</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-                {{-- <button class="btn btn-outline-primary m-2" type="submit">Get Equpment Detail</button> --}}
+
+            {{-- <button class="btn btn-outline-primary m-2" type="submit">Get Equpment Detail</button> --}}
 
 
             <div id="equipment-detail">
-                <button id="get-equipment-detail" class="btn btn-outline-primary m-2" type="button">Get Equipment Detail</button>
+                <button id="get-equipment-detail" class="btn btn-outline-primary m-2" type="button">Get Equipment
+                    Detail</button>
                 <table id="si-ref-eq-infos-table" class="table table-bordered table-striped" style="display: none;">
                     <thead>
                         <tr>
@@ -92,21 +93,21 @@
 
                         // Perform AJAX request to fetch data
                         fetch('/si-ref-eq-infos', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Assuming CSRF token is available
-                            },
-                            body: JSON.stringify(data)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Clear existing table rows
-                            tbody.innerHTML = '';
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Assuming CSRF token is available
+                                },
+                                body: JSON.stringify(data)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                // Clear existing table rows
+                                tbody.innerHTML = '';
 
-                            // Populate table with fetched data
-                            data.forEach((info, index) => {
-                                const row = `
+                                // Populate table with fetched data
+                                data.forEach((info, index) => {
+                                    const row = `
                                     <tr>
                                         <td>${index + 1}</td>
                                         <td>${info.eq_name}</td>
@@ -133,17 +134,60 @@
                                             </form>
                                         </td>
                                     </tr>
-                                `;
-                                tbody.innerHTML += row;
-                            });
 
-                            // Show the table
-                            table.style.display = 'table';
-                        })
-                        .catch(error => {
-                            console.error('Error fetching equipment detail:', error);
-                            // Optionally show an error message or handle errors
-                        });
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="c0-${info.id}">C0:</label>
+                                                <input type="number" id="c0-${info.id}" name="c0-${info.id}" value="${info.c0}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="c1-${info.id}">C1:</label>
+                                                <input type="number" id="c1-${info.id}" name="c1-${info.id}" value="${info.c1}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="c2-${info.id}">C2:</label>
+                                                <input type="number" id="c2-${info.id}" name="c2-${info.id}" value="${info.c2}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="c3-${info.id}">C3:</label>
+                                                <input type="number" id="c3-${info.id}" name="c3-${info.id}" value="${info.c3}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="c4-${info.id}">C4:</label>
+                                                <input type="number" id="c4-${info.id}" name="c4-${info.id}" value="${info.c4}" class="form-control">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="serr-${info.id}">Serr:</label>
+                                                <input type="text" id="serr-${info.id}" name="serr-${info.id}" value="${info.Serr}" class="form-control">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <button class="btn btn-outline-primary my-4 update-button" data-info-id="${info.id}">Update</button>
+                                            </div>
+
+
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+
+                                <button class="btn btn-outline-primary m-2 get-point-button">Get Equipment Points</button>
+
+
+                                `;
+                                    tbody.innerHTML += row;
+                                });
+
+                                // Show the table
+                                table.style.display = 'table';
+                            })
+                            .catch(error => {
+                                console.error('Error fetching equipment detail:', error);
+                                // Optionally show an error message or handle errors
+                            });
                     }
                 });
             </script>
@@ -152,6 +196,87 @@
             {{-- <div class="d-flex">
                 {{ $siRefEqInfos->links('pagination::bootstrap-4') }}
             </div> --}}
+
+
+            <table id="points-table" class="table table-bordered table-striped d-none m-3">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Equipment ID</th>
+                        <th>Sensor ID</th>
+                        <th>Split No</th>
+                        <th>Point No</th>
+                        <th>Reference Value</th>
+                        <th>Value</th>
+                        <th>Uncertainty</th>
+                        <th>Calibration Date</th>
+                    </tr>
+                </thead>
+                <tbody class="points-table-body">
+                    <!-- Data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+
+
+
+            {{-- script to fetch points start --}}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.body.addEventListener('click', function(event) {
+                        if (event.target.classList.contains('get-point-button')) {
+
+
+                            const data = {
+                                eq_name: $("#eq_name_select").val(),
+                                eq_sensor: $("#eq_sensor_select").val(),
+                                eq_cal: $("#eq_cal_select").val(),
+                                eq_split: $("#eq_split_select").val(),
+                            };
+
+                            const eq_name = data.eq_name; // Ensure you have input fields with these IDs
+                            const sensor_id = data.eq_sensor;
+                            const cal_date = data.eq_cal;
+                            const split_no = data.eq_split;
+
+                            fetch(
+                                    `/get_equipment_points?eq_name=${eq_name}&sensor_id=${sensor_id}&cal_date=${cal_date}&split_no=${split_no}`
+                                    )
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Clear existing table rows
+                                    const tableBody = document.querySelector('.points-table-body');
+                                    if (tableBody) {
+                                        tableBody.innerHTML = '';
+
+                                        // Populate table with fetched data
+                                        data.forEach((point, index) => {
+                                            const row = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${point.sensor_id}</td>
+                                    <td>${point.split_no}</td>
+                                    <td>${point.point_no}</td>
+                                    <td>${point.ref_val}</td>
+                                    <td>${point.value}</td>
+                                    <td>${point.p_uncert}</td>
+                                    <td>${point.cal_date}</td>
+                                </tr>
+                            `;
+                                            tableBody.insertAdjacentHTML('beforeend', row);
+                                        });
+
+                                        // Make the table visible
+                                        document.getElementById('points-table').classList.remove('d-none');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching data:', error);
+                                });
+                        }
+                    });
+                });
+            </script>
+            {{-- script to fetch points start --}}
 
 
 
@@ -205,13 +330,19 @@
 
             $('#eq_name_select').change(function() {
                 var selectedEqName = $(this).val();
+                const loader = document.getElementById('loading');
+
                 $.ajax({
                     url: '{{ route('getSensorIdsByEqName') }}',
                     type: 'GET',
                     data: {
                         eq_name: selectedEqName
                     },
+                    beforeSend: function(){
+                        loader.style.display = 'block';
+                    },
                     success: function(response) {
+                        // loader.style.display = 'none';
                         $('#eq_sensor_select').empty();
                         console.log(response);
                         Object.values(response).forEach(function(item) {
@@ -226,6 +357,8 @@
                 });
             });
         });
+
+
 
         $(document).ready(function() {
 
@@ -264,5 +397,45 @@
                 });
             });
         });
+
+
+
+        // update button start
+        document.addEventListener('DOMContentLoaded', function() {
+            // Use event delegation to handle clicks on dynamically generated buttons
+            document.body.addEventListener('click', function(event) {
+                if (event.target.classList.contains('update-button')) {
+                    const button = event.target;
+                    const infoId = button.getAttribute('data-info-id');
+                    const data = {
+                        c0: document.getElementById(`c0-${infoId}`).value,
+                        c1: document.getElementById(`c1-${infoId}`).value,
+                        c2: document.getElementById(`c2-${infoId}`).value,
+                        c3: document.getElementById(`c3-${infoId}`).value,
+                        c4: document.getElementById(`c4-${infoId}`).value,
+                        serr: document.getElementById(`serr-${infoId}`).value
+                    };
+
+                    fetch(`/update_info_button/${infoId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response data
+                            // alert('Information updated successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error updating information:', error);
+                            // Optionally show an error message or handle errors
+                        });
+                }
+            });
+        });
+        //update button end
     </script>
 @endpush

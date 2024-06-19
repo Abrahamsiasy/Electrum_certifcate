@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SiCalPoint;
 use App\Models\SiRefEqInfo;
 use Illuminate\Http\Request;
 use App\DataTables\SiRefEqInfoDataTable;
@@ -59,6 +60,26 @@ class SiRefEqInfoController extends Controller
         return response()->json($siRefEqInfos);
     }
 
+    public function getEquipmentPoints(Request $request)
+    {
+        $eqName = SiRefEqInfo::where('eq_name', $request->eq_name);
+        $eq_id = $eqName->first()->eq_id;
+        $sensor_id = $request->query('sensor_id');
+        // $cal_date = $request->query('cal_date');
+        $split_no = $request->query('split_no');
+        // dd($eq_id);
+
+        // dd(SiCalPoint::first());
+        $points = SiCalPoint::where('eq_id', $eq_id)
+            ->where('sensor_id', $sensor_id)
+            // ->where('cal_date', $cal_date)
+            ->where('split_no', $split_no)
+            ->get();
+        // dd($points);
+
+        return response()->json($points);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -101,6 +122,24 @@ class SiRefEqInfoController extends Controller
         return view('si_ref_eq_infos.edit', compact('siRefEqInfo'));
     }
 
+    public function updateInfoButton(Request $request, $id)
+    {
+
+        //dd($request->all());
+        // Find the record by ID and update it
+        $siRefEqInfo = SiRefEqInfo::find($id);
+        // dd($siRefEqInfo);
+        //update $siRefEqInfo one by one for "c0" => 0.0
+        $siRefEqInfo->c0 = $request->c0;
+        $siRefEqInfo->c1 = $request->c1;
+        $siRefEqInfo->c3 = $request->c3;
+        $siRefEqInfo->c4 = $request->c4;
+        $siRefEqInfo->Serr = $request->serr;
+        $siRefEqInfo->save();
+        // $siRefEqInfo->update($request);
+
+        return response()->json(['message' => 'Information updated successfully'], 200);
+    }
     /**
      * Update the specified resource in storage.
      */

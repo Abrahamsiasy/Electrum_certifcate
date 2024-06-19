@@ -9,7 +9,7 @@ class SiRefEqInfo extends Model
 {
     use HasFactory;
     protected $table = 'si_ref_eq_info';
-
+    public $timestamps = false;
     protected $fillable = [
         'eq_name',
         'brand',

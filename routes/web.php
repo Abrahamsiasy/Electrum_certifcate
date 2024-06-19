@@ -12,6 +12,8 @@ Route::get('/get-div-rows-by-sensor-id', [SiRefEqInfoController::class, 'getDivR
 Route::post('/si_ref_eq_infos_table', [SiRefEqInfoController::class, 'siRefEqInfosTable'])->name('si_ref_eq_infos_table');
 
 Route::post('/si-ref-eq-infos', [SiRefEqInfoController::class, 'siRefEqInfosTable'])->name('si-ref-eq-infos.table');
+Route::put('/update_info_button/{id}', [SiRefEqInfoController::class, 'updateInfoButton'])->name('si-ref-eq-infos.button');
+Route::get('/get_equipment_points', [SiRefEqInfoController::class, 'getEquipmentPoints']);
 
 
 Route::get('/', function () {
