@@ -5,14 +5,18 @@
         <div class="row">
 
             <!-- Success Message Div -->
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{-- <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Success!</strong> Your action was completed successfully.
                 <button type="button" class="close btn-success" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">X</span>
                 </button>
-            </div>
+            </div> --}}
             <div class="col-md-12">
-                <h1 class="my-2">SI Reference Equipment Info</h1>
+
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <h1 class="mb-0">SI Reference Equipment Info</h1>
+                    <a class="btn btn-outline-primary" href="{{ route('si_ref_eq_infos.create') }}">Create New</a>
+                </div>
 
                 <h2>Select Equipment Name</h2>
                 <select class="form-control select2" id="eq_name_select" name="eq_name">
