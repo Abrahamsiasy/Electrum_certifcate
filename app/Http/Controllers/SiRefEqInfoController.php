@@ -95,12 +95,46 @@ class SiRefEqInfoController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->validated();
-        SiRefEqInfo::create($data);
+        $validatedData = $request->validate([
+            'eq_name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'serial_no' => 'required|string|max:255',
+            'eq_id' => 'required|string|max:255',
+            'sensor_sn' => 'required|string|max:255',
+            'sensor_id' => 'required|string|max:255',
+            'split_no' => 'required|numeric',
+            'c0' => 'nullable|numeric',
+            'c1' => 'nullable|numeric',
+            'c2' => 'nullable|numeric',
+            'c3' => 'nullable|numeric',
+            'c4' => 'nullable|numeric',
+            'Serr' => 'nullable|numeric',
+            'range_min' => 'required|numeric',
+            'range_max' => 'required|numeric|gt:range_min', // Ensure range_max is greater than range_min
+            'cal_date' => 'required|date_format:Y-m-d',
+            'uncert' => 'required|string|max:255',
+            'cmc' => 'required|string|max:255',
+            'res' => 'required|string|max:255',
+            'unit' => 'required|string|max:255',
+        ]);
 
-        return redirect()->route('si_ref_eq_infos.index')
-            ->with('success', 'SiRefEqInfo created successfully.');
+        // Set default values for nullable fields
+        $validatedData['c0'] = $validatedData['c0'] ?? 0;
+        $validatedData['c1'] = $validatedData['c1'] ?? 0;
+        $validatedData['c2'] = $validatedData['c2'] ?? 0;
+        $validatedData['c3'] = $validatedData['c3'] ?? 0;
+        $validatedData['c4'] = $validatedData['c4'] ?? 0;
+        $validatedData['Serr'] = $validatedData['Serr'] ?? 0;
+
+        // dd($validatedData);
+
+        SiRefEqInfo::create($validatedData);
+
+        return redirect()->route('si_ref_eq_infos.index')->with('success', 'SI Reference Equipment created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.

@@ -4,6 +4,13 @@
     <div class="container">
         <div class="row">
 
+            <!-- Success Message Div -->
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> Your action was completed successfully.
+                <button type="button" class="close btn-success" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
             <div class="col-md-12">
                 <h1 class="my-2">SI Reference Equipment Info</h1>
 
@@ -290,6 +297,9 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
         // Wait for the document to be fully loaded
