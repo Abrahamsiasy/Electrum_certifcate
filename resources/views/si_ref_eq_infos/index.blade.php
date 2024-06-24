@@ -15,7 +15,13 @@
 
                 <div class="d-flex justify-content-between align-items-center my-2">
                     <h1 class="mb-0">SI Reference Equipment Info</h1>
-                    <a class="btn btn-outline-primary" href="{{ route('si_ref_eq_infos.create') }}">Create New</a>
+                    <div>
+                        <a class="btn btn-outline-primary" href="{{ route('getEquipmentDetailsPage') }}">View Equipment Detail</a>
+                        <a class="btn btn-outline-primary" href="{{ route('si_ref_eq_infos.create') }}">Create New
+                            Equipment</a>
+                        <a class="btn btn-outline-primary" href="{{ route('si_ref_eq_infos.create') }}">Add Splits To
+                            Equipment</a>
+                    </div>
                 </div>
 
                 <h2>Select Equipment Name</h2>
@@ -27,7 +33,7 @@
 
                 <div class="row my-2" id="sensor_div" style="display: none;">
                     <h2 class="mt-4">Select Equipment with Sensor ID</h2>
-                    <select class="form-control select2" id="eq_sensor_select" name="eq_sensor">
+                    <select class="form-control select2 m-2 p-2" id="eq_sensor_select" name="eq_sensor">
                         <option value="">Select Equipment Name first</option>
                     </select>
                 </div>
@@ -175,7 +181,8 @@
                                             </div>
 
                                             <div class="col-md-3">
-                                                <button class="btn btn-outline-primary my-4 update-button" data-info-id="${info.id}">Update</button>
+                                                <button class="btn btn-outline-primary my-4 update-button" data-info-id="${info.id}">Update Save Equipment Detail</button>
+
                                             </div>
 
 
@@ -185,7 +192,11 @@
                                 </tr>
 
 
-                                <button class="btn btn-outline-primary m-2 get-point-button">Get Equipment Points</button>
+                                <div class="d-flex">
+                                    <button class="btn btn-outline-primary p-2 get-point-button">Get Equipment Points</button>
+                                </div>
+
+
 
 
                                 `;
@@ -251,7 +262,7 @@
 
                             fetch(
                                     `/get_equipment_points?eq_name=${eq_name}&sensor_id=${sensor_id}&cal_date=${cal_date}&split_no=${split_no}`
-                                    )
+                                )
                                 .then(response => response.json())
                                 .then(data => {
                                     // Clear existing table rows
@@ -352,7 +363,7 @@
                     data: {
                         eq_name: selectedEqName
                     },
-                    beforeSend: function(){
+                    beforeSend: function() {
                         loader.style.display = 'block';
                     },
                     success: function(response) {

@@ -14,6 +14,7 @@ Route::post('/si_ref_eq_infos_table', [SiRefEqInfoController::class, 'siRefEqInf
 Route::post('/si-ref-eq-infos', [SiRefEqInfoController::class, 'siRefEqInfosTable'])->name('si-ref-eq-infos.table');
 Route::put('/update_info_button/{id}', [SiRefEqInfoController::class, 'updateInfoButton'])->name('si-ref-eq-infos.button');
 Route::get('/get_equipment_points', [SiRefEqInfoController::class, 'getEquipmentPoints']);
+Route::get('/equipment_detail', [SiRefEqInfoController::class, 'getEquipmentDetailsPage'])->name('getEquipmentDetailsPage');
 
 
 Route::get('/', function () {

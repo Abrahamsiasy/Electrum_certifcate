@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SiCalPoint;
 use App\Models\SiRefEqInfo;
 use Illuminate\Http\Request;
+use App\Models\SiRefEqDetail;
 use App\DataTables\SiRefEqInfoDataTable;
 
 class SiRefEqInfoController extends Controller
@@ -58,6 +59,16 @@ class SiRefEqInfoController extends Controller
         // dd($siRefEqInfos);
 
         return response()->json($siRefEqInfos);
+    }
+
+    public function getEquipmentDetailsPage(){
+
+
+        $equipmentDetails = SiRefEqDetail::all();
+
+        // Pass the data to the view
+        return view('si_ref_eq_infos.details.index', compact('equipmentDetails'));
+        // dd('here');
     }
 
     public function getEquipmentPoints(Request $request)
@@ -127,6 +138,11 @@ class SiRefEqInfoController extends Controller
         $validatedData['c4'] = $validatedData['c4'] ?? 0;
         $validatedData['Serr'] = $validatedData['Serr'] ?? 0;
 
+
+
+
+
+
         // dd($validatedData);
 
         SiRefEqInfo::create($validatedData);
@@ -171,6 +187,15 @@ class SiRefEqInfoController extends Controller
         $siRefEqInfo->Serr = $request->serr;
         $siRefEqInfo->save();
         // $siRefEqInfo->update($request);
+
+        $siRefEqDetail = new SiRefEqDetail();
+        // dd($siRefEqDetail);
+        $siRefEqDetail->eq_id = $siRefEqInfo->eq_id;
+        $siRefEqDetail->eq_name = $siRefEqInfo->eq_name;
+        $siRefEqDetail->brand = $siRefEqInfo->brand;
+        $siRefEqDetail->model = $siRefEqInfo->model;
+        $siRefEqDetail->serial_no = $request['serial_no'];
+        $siRefEqDetail->save();
 
         return response()->json(['message' => 'Information updated successfully'], 200);
     }
